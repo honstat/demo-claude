@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.repository.mapper.StudentMapper">
+
+    <resultMap id="studentResultMap" type="com.example.demo.models.Student">
+        <id property="id" column="id"/>
+        <result property="studentNo" column="student_no"/>
+        <result property="name" column="name"/>
+        <result property="gender" column="gender"/>
+        <result property="grade" column="grade"/>
+        <result property="className" column="class_name"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="baseColumns">
+        id, student_no, name, gender, grade, class_name, create_time, update_time
+    </sql>
+
+    <select id="findById" resultMap="studentResultMap">
+        SELECT
+        <include refid="baseColumns"/>
+        FROM student
+        WHERE id = #{id}
+    </select>
+
+    <select id="findAll" resultMap="studentResultMap">
+        SELECT
+        <include refid="baseColumns"/>
+        FROM student
+        ORDER BY create_time DESC
+    </select>
+
+    <select id="findByStudentNo" resultMap="studentResultMap">
+        SELECT
+        <include refid="baseColumns"/>
+        FROM student
+        WHERE student_no = #{studentNo}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO student (student_no, name, gender, grade, class_name, create_time, update_time)
+        VALUES (#{studentNo}, #{name}, #{gender}, #{grade}, #{className}, #{createTime}, #{updateTime})
+    </insert>
+
+    <update id="update">
+        UPDATE student
+        SET name = #{name},
+            gender = #{gender},
+            grade = #{grade},
+            class_name = #{className},
+            update_time = #{updateTime}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM student WHERE id = #{id}
+    </delete>
+
+</mapper>
