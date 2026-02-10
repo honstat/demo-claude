@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(winget:*)",
+      "Bash(where:*)",
+      "Bash(mvn compile:*)",
+      "Bash(mvn:*)"
+    ]
+  }
+}
