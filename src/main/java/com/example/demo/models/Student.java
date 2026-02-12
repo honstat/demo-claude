@@ -53,4 +53,9 @@ public class Student {
      * 更新时间
      */
     private LocalDateTime updateTime;
+
+    /**
+     * 逻辑删除标记：true-已删除，false-未删除
+     */
+    private Boolean deleted;
 }

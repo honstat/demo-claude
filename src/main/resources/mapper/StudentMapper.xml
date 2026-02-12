@@ -12,23 +12,25 @@
         <result property="className" column="class_name"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
+        <result property="deleted" column="deleted"/>
     </resultMap>
 
     <sql id="baseColumns">
-        id, student_no, name, gender, grade, class_name, create_time, update_time
+        id, student_no, name, gender, grade, class_name, create_time, update_time, deleted
     </sql>
 
     <select id="findById" resultMap="studentResultMap">
         SELECT
         <include refid="baseColumns"/>
         FROM student
-        WHERE id = #{id}
+        WHERE id = #{id} AND deleted = 0
     </select>
 
     <select id="findAll" resultMap="studentResultMap">
         SELECT
         <include refid="baseColumns"/>
         FROM student
+        WHERE deleted = 0
         ORDER BY create_time DESC
     </select>
 
@@ -36,7 +38,7 @@
         SELECT
         <include refid="baseColumns"/>
         FROM student
-        WHERE student_no = #{studentNo}
+        WHERE student_no = #{studentNo} AND deleted = 0
     </select>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
@@ -54,8 +56,8 @@
         WHERE id = #{id}
     </update>
 
-    <delete id="deleteById">
-        DELETE FROM student WHERE id = #{id}
-    </delete>
+    <update id="deleteById">
+        UPDATE student SET deleted = 1, update_time = NOW() WHERE id = #{id}
+    </update>
 
 </mapper>

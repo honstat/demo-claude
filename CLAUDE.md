@@ -10,6 +10,18 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 # demo-claude
 学习积累claude经验的项目
 
+## 启动
+ 如果有会话 恢复最近一次会话
+ claude --resume demo-claude
+ 如果没有会话，创建指定会话
+ claude --session demo-claude
+## 压缩上下文
+/compact
+打日志，提示正在压缩上下文
+### 压缩策略
+上下文超长或对话轮数超过10轮
+
+
 ## 常用命令
 
 ### Maven 构建
@@ -50,6 +62,15 @@ mvn clean install
   - 驼峰命名
   - 其他规范参照阿里编码规约
 
+  - **逻辑删除规范**（强制）：
+    - 所有业务实体的删除操作必须使用逻辑删除，禁止物理删除
+    - 实体模型需包含 `deleted` 字段（Boolean 类型）用于标记删除状态
+    - 数据库表需包含 `deleted` 字段（TINYINT(1)，默认值 0）
+    - Mapper XML 中删除操作改为 UPDATE 操作，设置 `deleted = 1`
+    - 所有查询操作需添加 `WHERE deleted = 0` 过滤条件
+    - 恢复操作通过 UPDATE 将 `deleted` 设为 0 实现
+
+
  ## 行为规范
  ### 常规
   - 用户提出开发和修改需求时先思考和追问 澄清后再开始编码
@@ -61,5 +82,11 @@ mvn clean install
  ##  测试
   - 测试通过后问询研发是否需要提交到远程git仓库
 
+ ### 验证完成后动作
+  - 更新需求内容到项目根目录changelog.md中 以日期时间（yyyy-MM-dd HH:mm:ss） 变更内容 内容子项的形式
+  - 更新当前最新的架构和功能到项目根目录 project.md文件中
 
+# 项目说明
+  请参考 @README.md 了解项目概况。
 
+ ## Claude 指令
